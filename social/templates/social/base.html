@@ -1,0 +1,65 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Demo of Resilient Disaster Communications in the Social-Media Era">
+    <meta name="author" content="Yuki Koizumi">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <link href="{% static 'social/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'social/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <link href="{% static 'social/bootstrap/icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'social/assets/css/main.css' %}" rel="stylesheet">
+    <script src="{% static 'social/jquery/jquery-3.6.0.min.js' %}"></script>
+
+  </head>
+  <body>
+    <nav class="navbar sticky-top navbar-light navbar-expand-lg bg-light p-3">
+      <span class="navbar-brand"><a class="text-reset text-decoration-none" href="{% url 'social:index' %}">{% block sitename %}Social Media Engine{% endblock %}</a></span>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'social:index' %}">Home</a>
+          </li>
+          <!-- <li class="nav-item">
+               <a class="nav-link" href="#">Disaster Information</a>
+               </li>
+               <li class="nav-item">
+               <a class="nav-link" href="#">Rescue Requests</a>
+               </li> -->
+          <li class="nav-item">
+            <a class="nav-link" id="verbose-trigger" href="#">Debug</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="demo-trigger" href="#">Demo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      $(function () {
+        $('a#verbose-trigger').on('click', () => {
+          $('.verbose').fadeToggle();
+        });
+        $('a#demo-trigger').on('click', () => {
+          $('body,html').animate({scrollTop: $(window).scrollTop() + 20000 },
+                                 20000,
+                                 'linear');
+          return false;
+        });
+      });
+    </script>
+
+    <div class="container">
+      <div class="row">
+
+        {% block content %}
+        {% endblock %}
+
+      </div><!-- end of row -->
+    </div><!-- end of container -->
+  </body>
+</html>

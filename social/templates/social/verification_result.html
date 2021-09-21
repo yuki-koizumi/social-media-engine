@@ -1,0 +1,37 @@
+{% if tweet.is_volunteer_verified %}
+<div class="card-body border-top">
+  <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#verification-result-detail-{{tweet.id}}" aria-expanded="false" aria-controls="verification-result-detail-{{tweet.id}}">
+    On-site volunteer verification task results
+  </button>      
+</div>
+<div class="card-body border-top collapse" id="verification-result-detail-{{tweet.id}}">
+  <h6 class="fw-bold">Status</h6>
+  <div class="alert alert-secondary bg-transparent">
+    <p>
+      {% if tweet.verification_status == 0 %}
+      Ongoing
+      {% elif tweet.verification_status == 2 %}
+      Unsure
+      {% endif %}
+    </p>
+  </div>
+  <h6 class="fw-bold">Address</h6>
+  <div class="alert alert-secondary bg-transparent">
+    <p>{{tweet.verification_address}}</p>
+  </div>
+  <h6 class="fw-bold">Notes</h6>
+  <div class="alert alert-secondary bg-transparent">
+    <p>{{tweet.verification_note}}</p>
+  </div>
+  <h6 class="fw-bold">Pictures</h6>
+  <div class="alert alert-secondary bg-transparent">
+    
+  </div>
+</div><!-- end of card-body -->
+{% else %}
+<div class="card-body border-top">
+  <button class="btn btn-sm btn-outline-secondary" type="button" disabled>
+    <i class="bi bi-x-square"></i> No on-site volunteer verification results
+  </button>      
+</div>
+{% endif %}

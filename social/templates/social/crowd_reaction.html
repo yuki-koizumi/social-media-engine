@@ -1,0 +1,37 @@
+<div class="card-body border-top">
+  <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#crowd-reaction-detail-{{tweet.id}}" aria-expanded="false" aria-controls="crowd-reaction-detail-{{tweet.id}}">
+    Remote volunteer reactions
+  </button>      
+</div>
+
+<div class="card-body border-top collapse" id="crowd-reaction-detail-{{tweet.id}}">
+
+  <h6 class="fw-bold">Relevance</h6>
+  <ul class="list-group">
+    <li class="list-group-item p-1">Relevant: {{tweet.relevance1_reaction}}</li>
+    <li class="list-group-item p-1">Irrelevant: {{tweet.relevance0_reaction}}</li>
+  </ul>
+  <h6 class="fw-bold mt-2">Firsthand information</h6>
+  <ul class="list-group">
+    <li class="list-group-item p-1">Firsthand information: {{tweet.firsthand1_reaction}}</li>
+    <li class="list-group-item p-1">Privately shared secondhand information: {{tweet.firsthand2_reaction}}</li>
+    <li class="list-group-item p-1">Public information: {{tweet.firsthand0_reaction}}</li>
+  </ul>
+  <h6 class="fw-bold mt-2">Rescue request</h6>
+  <ul class="list-group">
+    <li class="list-group-item p-1">Rescue request: {{tweet.rescue1_reaction}}</li>
+    <li class="list-group-item p-1">Non Rescue request: {{tweet.rescue0_reaction}}</li>
+  </ul>
+
+  <h6 class="fw-bold mt-2">Inferred address</h6>
+  <div class="alert alert-secondary bg-transparent">
+    <p>{{tweet.inferred_address}}</p>
+  </div>
+
+  <h6 class="fw-bold mt-2">Other response</h6>
+  <ul class="list-group">
+    <li class="list-group-item p-1">Urgent: {{tweet.urgent_reaction}}</li>
+    <li class="list-group-item p-1">Doubtful: {{tweet.doubtful_reaction}}</li>
+  </ul>
+
+</div><!-- end of card-body -->

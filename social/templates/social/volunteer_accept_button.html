@@ -1,0 +1,32 @@
+<div class="card-body border-top text-end" id="accept-{{tweet.id}}">
+  <!-- <a href="{% url 'social:volunteer_detail' tweet.id %}" class="btn btn-sm btn-outline-primary">Accept</a>
+  -->
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#accept-modal-tweet-{{tweet.id}}">
+    Accept
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="accept-modal-tweet-{{tweet.id}}" tabindex="-1" aria-labelledby="accept-modal-tweet-{{tweet.id}}-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="accept-modal-tweet-{{tweet.id}}-label">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-start">
+          Do you accept the verification task for this tweet?
+          <div class="lh-1 py-1 px-2">
+            {{tweet.full_text}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <!-- <button type="button" class="btn btn-sm btn-outline-primary">Accept</button> -->
+          <a href="{% url 'social:volunteer_task_create' tweet.id %}" class="btn btn-sm btn-outline-primary">Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end of card-body -->

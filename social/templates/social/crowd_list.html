@@ -1,0 +1,164 @@
+{% extends 'social/base.html' %}
+{% block title %}Social Media Engine - Remote Volunteer{% endblock %}
+{% block sitename %}SME - Remote Volunteer{% endblock %}
+
+{% block content %}
+{% include 'social/pagination.html' %}
+{% for tweet in object_list %}
+<!-- -------------------------------------------------- -->
+<!-- script block for tweet ({{tweet.tweet_id}}) start -->
+<script>
+ jQuery(function($) {
+   $('#form-{{tweet.id}}').submit(function(event) {
+     // HTMLでの送信をキャンセル
+     event.preventDefault();
+     // 操作対象のフォーム要素を取得
+     var $form = $(this);
+     // 送信ボタンを取得
+     // （後で使う: 二重送信を防止する。）
+     var $button = $form.find('button');
+     // 送信
+     $.ajax({
+       url: $form.attr('action'),
+       type: $form.attr('method'),
+       data: $form.serialize(),
+       timeout: 10000,  // 単位はミリ秒
+       // 送信前
+       beforeSend: function(xhr, settings) {
+         // ボタンを無効化し、二重送信を防止
+         $button.attr('disabled', true);
+         $('span#spinner-{{tweet.id}}').fadeIn();
+       },
+       // 応答後
+       complete: function(xhr, textStatus) {
+         // ボタンを有効化し、再送信を許可
+         // $button.attr('disabled', false);
+       },
+       // 通信成功時の処理
+       success: function(result, textStatus, xhr) {
+         // 入力値を初期化
+         $form[0].reset();
+         $('div#form-body-{{tweet.id}}').fadeOut();
+         // $('#form-{{tweet.id}}').text('OK');
+       },
+       // 通信失敗時の処理
+       error: function(xhr, textStatus, error) {}
+     });
+   });
+ });
+</script>
+<!-- script block for tweet ({{tweet.tweet_id}}) end -->
+<!-- tweet block ({{tweet.tweet_id}}) start -->
+<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 p-3" id="tweet-{{tweet.tweet_id}}">
+  <div class="card">
+    {% include 'social/sme_result.html' %}
+
+    <div class="card-body">
+      {% if view.mode == 'verbose' %}
+      <p class="m-0 mb-1"><span class="text-muted">@{{tweet.screen_name}}</span></p>
+      {% else %}
+      <p class="m-0 mb-1"><span class="text-muted">@{{tweet.screen_name}}</span></p>
+      <!-- <p class="m-0 mb-1"><span class="text-muted">@anonymous</span></p> -->
+      {% endif %}
+      <p class="m-0 mb-1">{{tweet.full_text}}</p>
+      <p class="text-muted m-0"><a href="https://twitter.com/{{tweet.screen_name}}/status/{{tweet.tweet_id}}"
+                                   target="_blank" class="text-reset text-decoration-none">{{tweet.created_at}}</a></p>
+    </div><!-- end of card-body -->
+
+    <div class="card-body border-top" id="form-body-{{tweet.id}}">
+      <form id="form-{{tweet.id}}" method="POST" action="{% url 'social:crowd_update' tweet.id %}">
+        {% csrf_token %}
+
+        <div class="mt-1">
+          {% if view.mode == 'verbose' %}
+          <div class="h6 form-text">Fill this field if you can infer the address of the event mentioned in the tweet.</div>
+          {% endif %}
+          <div class="input-group input-group-sm mx-1">
+            <span class="input-group-text">Address<!-- <i class="bi bi-mailbox"></i> --></span>
+            <input type="text" class="form-control" name="inferred-address-{{tweet.id}}">
+          </div>
+        </div>
+
+        {% if view.mode == 'verbose' %}
+        <div class="h6 form-text">Choose the following tweet categories if you think the categories above are wrong.</div>
+        {% endif %}
+        <div class="mt-1">
+          {% if view.mode == 'verbose' %}
+          <h6 class="mb-0">Relevance</h6>
+          {% endif %}
+          <div class="form-check form-check-inline mx-1 p-0">
+            <input type="radio" class="btn-check" name="relevant-{{tweet.id}}" id="relevant-{{tweet.tweet_id}}" value="1" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="relevant-{{tweet.tweet_id}}">Relevant</label>
+          </div>
+          <div class="form-check form-check-inline mx-1 p-0">
+            <input class="btn-check" type="radio" name="relevant-{{tweet.id}}" id="irrelevant-{{tweet.tweet_id}}" value="0" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="irrelevant-{{tweet.tweet_id}}">Irrelevant</label>
+          </div>
+        </div>
+
+        <div class="mt-1">
+          {% if view.mode == 'verbose' %}
+          <h6 class="mb-0">Information Source</h6>
+          {% endif %}
+          <div class="form-check form-check-inline mx-1 p-0">
+            <input class="btn-check" type="radio" name="firsthand-{{tweet.id}}" id="firsthand-{{tweet.tweet_id}}" value="1" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="firsthand-{{tweet.tweet_id}}">Firsthand info.</label>
+          </div>
+          <div class="form-check form-check-inline mx-1 p-0">
+            <input class="btn-check" type="radio" name="firsthand-{{tweet.id}}" id="secondhand-{{tweet.tweet_id}}" value="2" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="secondhand-{{tweet.tweet_id}}">Privately shared firsthand info.</label>
+          </div>
+          <div class="form-check form-check-inline mx-1 p-0">
+            <input class="btn-check" type="radio" name="firsthand-{{tweet.id}}" id="thirdhand-{{tweet.tweet_id}}" value="0" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="thirdhand-{{tweet.tweet_id}}">Secondhand info.</label>
+          </div>
+        </div>
+
+        <div class="mt-1">
+          {% if view.mode == 'verbose' %}
+          <h6 class="mb-0">Rescue reequst</h6>
+          {% endif %}
+          <div class="form-check form-check-inline mx-1 p-0">
+            <input class="btn-check" type="radio" name="rescue-{{tweet.id}}" id="rescue-{{tweet.tweet_id}}" value="1" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="rescue-{{tweet.tweet_id}}">Rescue</label>
+          </div>
+          <div class="form-check form-check-inline mx-1 p-0">
+            <input class="btn-check" type="radio" name="rescue-{{tweet.id}}" id="non-rescue-{{tweet.tweet_id}}" value="0" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="non-rescue-{{tweet.tweet_id}}">Non-rescue</label>
+          </div>
+        </div>
+
+        <div class="row mt-1">
+          <div class="col-8">
+            <div class="text-start">
+              <div class="form-check form-check-inline mx-1 p-0">
+                <input type="checkbox" class="btn-check" id="urgent-{{tweet.tweet_id}}" name="urgent-{{tweet.id}}" autocomplete="off" value="1">
+                <!-- <label class="btn btn-outline-secondary btn-sm" for="urgent-{{tweet.tweet_id}}"><i class="bi bi-exclamation-lg"></i></label> -->
+                <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="urgent-{{tweet.tweet_id}}">Urgent</label>
+              </div>
+              <div class="form-check form-check-inline mx-1 p-0">
+                <input type="checkbox" class="btn-check" id="doubtful-{{tweet.tweet_id}}" name="doubtful-{{tweet.id}}" autocomplete="off" value="1">
+                <!-- <label class="btn btn-outline-secondary btn-sm" for="doubtful-{{tweet.tweet_id}}"><i class="bi bi-question-lg"></i></label> -->
+                <label class="btn btn-outline-secondary btn-sm py-0 px-1" for="doubtful-{{tweet.tweet_id}}">Doubtful</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 text-end">
+            <button type="submit" class="btn btn-sm btn-outline-primary">
+              <span style="display:none;" id="spinner-{{tweet.id}}" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Submit</button>
+          </div>
+        </div>
+
+      </form>
+    </div><!-- end of card-body -->
+
+    {% include 'social/debug_button.html' %}
+  </div><!-- end of card -->
+</div>
+<!-- end of tweet block {{tweet.tweet_id}} -->
+<!-- -------------------------------------------------- -->
+{% endfor %}
+
+{% include 'social/pagination.html' %}
+{% endblock %}

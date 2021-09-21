@@ -1,0 +1,12 @@
+<div class="card-body border-top">
+  <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#volunteer-working-detail-{{tweet.id}}" aria-expanded="false" aria-controls="volunteer-working-detail-{{tweet.id}}">
+    On-site volunteer working status
+  </button>      
+</div>
+<div class="card-body border-top collapse" id="volunteer-working-detail-{{tweet.id}}">
+  <h6 class="fw-bold">On-site volunteer working status</h6>
+  <ul class="list-group list-group-flush">
+    <!-- <li class="list-group-item p-1">{% with stlist=tweet.similar_tweet %}There {{ stlist | length | pluralize:"is,are" }} {{ stlist | length }} similar tweet{{ stlist | length | pluralize }}.{% endwith %}</li> -->
+    <li class="list-group-item p-1">{% with count=tweet.verification_task.all.count%}{{ count }} on-site volunteer team{{ count | pluralize:" is,s are" }} currently working on verifying this tweet.{% endwith %}</li>
+  </ul>
+</div><!-- end of card-body -->

@@ -1,0 +1,22 @@
+{% extends 'social/base.html' %}
+{% block title %}Social Media Engine - On-site Volunteer{% endblock %}
+{% block sitename %}SME - On-site Volunteer{% endblock %}
+
+{% block content %}
+{% include 'social/pagination.html' %}
+{% for tweet in object_list %}
+<!-- -------------------------------------------------- -->
+<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 p-3" id="tweet-{{tweet.tweet_id}}"><!-- tweet block ({{tweet.tweet_id}}) start -->
+  <div class="card">
+    {% include 'social/sme_result.html' %}
+    {% include 'social/tweet_body.html' %}
+    {% include 'social/volunteer_working_status.html' %}
+    {% include 'social/crowd_reaction.html' %}
+    {% include 'social/volunteer_accept_button.html' %}
+    {% include 'social/debug_button.html' %}
+  </div><!-- end of card -->
+</div><!-- end of tweet block {{tweet.tweet_id}} -->
+<!-- -------------------------------------------------- -->
+{% endfor %}
+{% include 'social/pagination.html' %}
+{% endblock %}

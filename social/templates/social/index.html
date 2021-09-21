@@ -1,0 +1,27 @@
+{% extends 'social/base.html' %}
+{% block title %}Social Media Engine - Index{% endblock %}
+
+{% block content %}
+<!-- -------------------------------------------------- -->
+<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 p-3" >
+  <div class="card">
+    <div class="card-header bg-transparent">
+      Social Media Engine
+    </div><!-- end of card-header -->
+
+    <div class="card-body">
+      <div class="list-group">
+        <a class="list-group-item list-group-item-action" href="{% url 'social:crowd' %}">Remote volunteer</a>
+        <a class="list-group-item list-group-item-action" href="{% url 'social:volunteer' %}">On-site volunteer</a>
+        <a class="list-group-item list-group-item-action" href="{% url 'social:firstresponder' %}">First responder</a>
+        <a class="list-group-item list-group-item-action" href="{% url 'social:firstresponder_resolved_list' %}">First responder - Resolved Tweets</a>
+        <a class="list-group-item list-group-item-action" href="{% url 'social:firstresponder_dismissed_list' %}">First responder - Dismissed Tweets</a>
+        <span class="list-group-item list-group-item-dark">Debug</span>
+        <a class="list-group-item list-group-item-action" href="{% url 'social:creating_demo_db' %}">Creating Demo Database</a>
+      </div>
+    </div><!-- end of card-body -->
+
+  </div><!-- end of card -->
+</div><!-- end of tweet block 1015611227337314304 -->
+<!-- -------------------------------------------------- -->
+{% endblock %}
